@@ -20,4 +20,7 @@ You can do it [by clicking here](https://github.com/Miguel-Dorta/facce/releases/
 
 # Set a field "admin" to true
 ./facce set admin=true -c credentials-file.json --uid 0123456789abcdefghijklmnopqr
+
+# Remove the field "role"
+./facce unset role -c credentials-file.json --uid 0123456789abcdefghijklmnopqr
 ```

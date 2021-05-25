@@ -31,6 +31,11 @@ var (
 		Short: "Set new Custom-Claims",
 		Run: set,
 	}
+	cmdUnset = &cobra.Command{
+		Use: "unset",
+		Short: "Remove a Custom-Claim",
+		Run: unset,
+	}
 	cmdVersion = &cobra.Command{
 		Use: "version",
 		Short: "Print version and exit",
@@ -41,7 +46,7 @@ var (
 func main() {
 	cmdRoot.PersistentFlags().StringVarP(&credentialPath, "credentials-file", "c", "", "App credentials. See more info in https://firebase.google.com/docs/admin/setup")
 	cmdRoot.PersistentFlags().StringVar(&uid, "uid", "", "User UID")
-	cmdRoot.AddCommand(cmdGet, cmdSet, cmdVersion)
+	cmdRoot.AddCommand(cmdGet, cmdSet, cmdUnset, cmdVersion)
 	if err := cmdRoot.Execute(); err != nil {
 		_, _ = fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -77,6 +82,13 @@ func set(_ *cobra.Command, args []string) {
 	}
 
 	if err := claims.Set(getAuthClient(), uid, m); err != nil {
+		_, _ = fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func unset(_ *cobra.Command, args []string) {
+	if err := claims.Unset(getAuthClient(), uid, args); err != nil {
 		_, _ = fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
